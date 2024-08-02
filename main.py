@@ -1,33 +1,45 @@
 import funcs
 import sys
 
-arguments = sys.argv[1:]
 
 def main(filename):
 
     
-    cmd = input("\ncommands:\n  print file data (pfd)\n  change data(chda) [key] [value] [datatype]\n  sort keys(soke)\n  clear data(cld) (y/n)\n\n  quit(q)\n>>>")
+    cmd = input("\ncommands:\n  print data (pd)\n  change data(chda) [key] [value] [datatype]\n  sort keys(soke)\n  clear data(cld) (y/n)\n\n  quit(q)\n>>>")
 
-    pfd = ("print file data", "pfd")
+
+    # initalizing commands tuples
+    pfd = ("print data", "pd")
     chda = ("change data", "chda")
     soke = ("sort keys", "soke")
     cld = ("clear data", "cld")
     q = ("quit", "q")
 
+
+    # splits command to get arguments later
     words = cmd.split()
 
-    if cmd in pfd:
+    # first checking commands that dont need arguments
+
+    # print data
+    if cmd in pd:
 
         print("\ndata: \n", funcs.load_data(filename))
 
+    # sort keys command
     elif cmd in soke:
 
         funcs.sort(filename)
 
+    # quit command
     elif cmd in q:
 
         raise KeyboardInterrupt
 
+
+    # ... and now commands which need arguments
+
+    # change data command
     elif words[0] in chda or f'{words[0]} {words[1]}' in chda:
 
         if "change" == words[0]:
@@ -37,12 +49,13 @@ def main(filename):
             print("got less or more arguments than needed. stopping the function")
             return
 
-        key, value, datatype = words[-3], words[-2], words[-1]
 
+        key, value, datatype = words[-3], words[-2], words[-1]
 
         funcs.change_data(filename, key, value, datatype)
 
-        
+    
+    # clear data command
     elif words[0] in cld or f'{words[0]} {words[1]}' in cld:
         
         if "clear" in words:
@@ -69,12 +82,6 @@ if __name__ == "__main__":
     filename = input("enter filename: ")
     if ".json" != filename[-5:]:
         filename = filename + ".json"
-
-    #print(arguments)
-    if arguments != []:
-        if arguments[0] == "-c" or arguments[0] == "--cmdline":
-
-            main = cmdline_mode.main_cmdline_mode
 
     while True:
 
