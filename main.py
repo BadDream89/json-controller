@@ -34,7 +34,7 @@ def main(filename):
     # quit command
     elif cmd in q:
 
-        raise KeyboardInterrupt
+        sys.exit()
 
 
     # ... and now commands which need arguments
