@@ -1,19 +1,23 @@
 import funcs
+import usermethods
 import sys
 
 
 def main(filename):
 
     
-    cmd = input("\ncommands:\n  print data (pd)\n  change data(chda) [key] [value] [datatype]\n  sort keys(soke)\n  clear data(cld) (y/n)\n\n  quit(q)\n>>>")
+    cmd = input("\ncommands:\n  print data (pd)\n  change data(chda) [key] [value] [datatype]\n  remove (rm) [key]\n  sort keys(soke)\n  clear data(cld) (y/n)\n  add list (at) [key]\n  add value to list (avt) [key] [value] [datatype] (quantity)\n\n  quit(q)\n>>>")
 
 
     # initalizing commands tuples
-    pfd = ("print data", "pd")
-    chda = ("change data", "chda")
-    soke = ("sort keys", "soke")
-    cld = ("clear data", "cld")
-    q = ("quit", "q")
+    pfd = ["print data", "pd"]
+    chda = ["change data", "chda"]
+    rm = ["remove", "rm"]
+    soke = ["sort keys", "soke"]
+    avl = ["add value to list", "avl"]
+    al = ["add list", "al"]
+    cld = ["clear data", "cld"]
+    q = ["quit", "q"]
 
 
     # splits command to get arguments later
@@ -24,12 +28,12 @@ def main(filename):
     # print data
     if cmd in pd:
 
-        print("\ndata: \n", funcs.load_data(filename))
+        usermethods.print_data(filename)
 
     # sort keys command
     elif cmd in soke:
 
-        funcs.sort(filename)
+        usermethods.sort(filename)
 
     # quit command
     elif cmd in q:
@@ -39,39 +43,66 @@ def main(filename):
 
     # ... and now commands which need arguments
 
-    # change data command
-    elif words[0] in chda or f'{words[0]} {words[1]}' in chda:
+    #########################
 
-        if "change" == words[0]:
-            words[0] = words[0] + words[1]
+    # 'change data' command
+    elif " ".join(words[:2]) in chda:
 
-        if len(words) != 4:
-            print("got less or more arguments than needed. stopping the function")
-            return
+        words[0] = words[0] + words.pop(1)
+        usermethods.change_data(filename, words)
 
-
-        key, value, datatype = words[-3], words[-2], words[-1]
-
-        funcs.change_data(filename, key, value, datatype)
-
-    
-    # clear data command
-    elif words[0] in cld or f'{words[0]} {words[1]}' in cld:
+    # now it is 'chda' command
+    elif words[0] in chda:
         
-        if "clear" in words:
-            words[0] = words[0] + words[1]
+        usermethods.change_data(filename, words)
 
-        if len(words) == 2:
-            areyousure = words[1]
-        else:
-            areyousure = input("are you sure? (y/n)")
+    #########################
 
-        if areyousure.lower() == "y":
+    # 'remove' or 'rm' command
+    elif words[0] in rm:
 
-            funcs.dump_data(filename, {})
+        usermethods.remove(filename, words)
 
-        print("data successfully cleared!")
+    #########################
 
+    # 'clear data' command
+    if " ".join(words[:2]) in cld:
+        
+        words[0] = words[0] + words.pop(1)
+        usermethods.clear_data(filename, words)
+
+    # 'cld' command
+    elif words[0] in cld:
+
+        usermethods.clear_data(filename, words)
+        
+    #########################
+
+    # 'add list' command
+    elif " ".join(words[:2]) in av:
+
+        words[0] = words[0] + words.pop[1]
+        usermethods.add_list(filename, words)
+
+    # 'at" command
+    elif words[0] in av:
+
+        usermethods.add_list(filename, words)
+
+    #########################
+
+    # 'add value to list' command
+    elif " ".join(words[:4]) in avl:
+
+        words[0] = words[0] + ''.join([words.pop(i) for i in range(1, 4)])
+        usermethods.add_value_to_list(filename, words)
+
+    # 'avl' command
+    elif words[0] in avl:
+        
+        usermethods.add_value_to_list(filename, words)
+
+    #########################
 
     else:
 

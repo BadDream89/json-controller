@@ -52,14 +52,6 @@ def change_data(filename: str,
         success = f"{success}\nold value: {old_value}\n"
 
     print(success)
-
-# it sorts dictionary by keys
-def sort(filename: str) -> None:
-
-    data = load_data(filename)
-    dump_data(filename, data, True)
-    
-    print("sort function has been completed")
     
 
 # converts value from the string to the user's suggested datatype
