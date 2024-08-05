@@ -25,7 +25,7 @@ def change_data(filename: str, words: list) -> None:
             return
 
     #key, value, datatype = words[-3], words[-2], words[-1]
-    key, value, datatype = words[-3:-1]
+    key, value, datatype = words[-3:]
 
     funcs.change_data(filename, key, value, datatype)
 
@@ -36,7 +36,9 @@ def remove(filename: str, words: list) -> None:
     key: str = words[1]
     data: dict = funcs.load_data(filename)
 
-    data.remove(key)
+    data.pop(key)
+    funcs.dump_data(filename, data)
+    print(f" key {key} successfully deleted!")
 
 
 # clear data command function
@@ -59,6 +61,11 @@ def add_list(filename: str, words: list) -> None:
 
     key: str = words[1]
     data: dict = funcs.load_data(filename)
+
+    if key in data.keys():
+        to_replace = input("there is key in the file. Replace it? (y/n): ")
+        if to_replace.lower() == "n":
+            return
 
     data.update({key: tuple()})
 
@@ -86,9 +93,11 @@ def add_value_to_list(filename: str, words: list) -> None:
     typeofkey = type(data[key])
     if typeofkey != type(list()):
 
-        print("error: value of the key that given isn't a list")
+        print("error: value of the key that was given isn't a list")
         return
 
     converted_value = funcs.convert_value(value, datatype)
     final_value = [converted_value] * quantity
-    data[key].append(final_value)
+    data[key] = data[key] + final_value
+
+    funcs.dump_data(filename, data)

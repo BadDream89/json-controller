@@ -1,14 +1,15 @@
 import json
 import os
 
-dir_path = os.path.dirname(os.path.realpath(__file__))
+dir_path = str( os.path.dirname(os.path.realpath(__file__)) )
 
 
 # simply loading data to the json file 
 def dump_data(filename: str, obj: dict, tosort=False) -> None:
 
     # dir_path + "/" + filename is getting absolute path to the file
-    with open(dir_path + "/" + filename, "w", encoding="utf-8") as f:
+    file_path = dir_path + "/" + filename
+    with open(file_path, "w", encoding="utf-8") as f:
         json.dump(obj, f, indent=4, sort_keys=tosort)
 
 
@@ -32,6 +33,7 @@ def change_data(filename: str,
 
 
     # gets old value if there was another to tell about old value after successful changing
+    old_value: str = ""
     if data.get(key):
         old_value = str(data[key])
 
@@ -62,8 +64,12 @@ def convert_value(value: str, datatype: str):
 
             case "int":
                 value = int(value)
+            case "integer":
+                value = int(value)
+
             case "float":
                 value = float(value)
+
             case "bool":
 
                 falses = ("0", "false", "False")
@@ -73,6 +79,9 @@ def convert_value(value: str, datatype: str):
 
             case "string":
                 value = str(value)
+            case "str":
+                value = str(value)
+
             case _:
                 print("unknown datatype")
                 raise ValueError

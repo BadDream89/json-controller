@@ -1,16 +1,27 @@
 import funcs
 import usermethods
 import sys
+import os
+import time
 
 
 def main(filename):
 
+
+    if not filename in os.listdir(funcs.dir_path):
+
+        #print(filename, os.listdir(funcs.dir_path))
+        print("cannot find the file. Creating new.")
+
+        funcs.dump_data(filename, {})
+
+
     
-    cmd = input("\ncommands:\n  print data (pd)\n  change data(chda) [key] [value] [datatype]\n  remove (rm) [key]\n  sort keys(soke)\n  clear data(cld) (y/n)\n  add list (at) [key]\n  add value to list (avt) [key] [value] [datatype] (quantity)\n\n  quit(q)\n>>>")
+    cmd = input("\ncommands:\n  print data(pd)\n  change data(chda) [key] [value] [datatype]\n  removes(rm) [key]\n  sort keys(soke)\n  clear data(cld) (y/n)\n  add list(al) [key]\n  add value to list(avl) [key] [value] [datatype] (quantity)\n\n  quit(q)\n>>>")
 
 
     # initalizing commands tuples
-    pfd = ["print data", "pd"]
+    pd = ["print data", "pd"]
     chda = ["change data", "chda"]
     rm = ["remove", "rm"]
     soke = ["sort keys", "soke"]
@@ -20,23 +31,34 @@ def main(filename):
     q = ["quit", "q"]
 
 
+
     # splits command to get arguments later
-    words = cmd.split()
+    words = cmd.split(" ")
 
     # first checking commands that dont need arguments
 
     # print data
-    if cmd in pd:
+    if words[0] in pd:
 
         usermethods.print_data(filename)
+        time.sleep(0.7)
+
+    elif " ".join(words[:2]) in pd and len(words) > 1:
+
+        usermethods.print_data(filename)
+        time.sleep(0.6)
 
     # sort keys command
-    elif cmd in soke:
+    elif words[0] in soke:
+
+        usermethods.sort(filename)
+
+    elif " ".join(words[:2]) in soke:
 
         usermethods.sort(filename)
 
     # quit command
-    elif cmd in q:
+    elif words[0] in q:
 
         sys.exit()
 
@@ -46,7 +68,7 @@ def main(filename):
     #########################
 
     # 'change data' command
-    elif " ".join(words[:2]) in chda:
+    elif " ".join(words[:2]) in chda and len(words) > 1:
 
         words[0] = words[0] + words.pop(1)
         usermethods.change_data(filename, words)
@@ -66,7 +88,7 @@ def main(filename):
     #########################
 
     # 'clear data' command
-    if " ".join(words[:2]) in cld:
+    elif " ".join(words[:2]) in cld and len(words) > 1:
         
         words[0] = words[0] + words.pop(1)
         usermethods.clear_data(filename, words)
@@ -79,20 +101,20 @@ def main(filename):
     #########################
 
     # 'add list' command
-    elif " ".join(words[:2]) in av:
+    elif " ".join(words[:2]) in al and len(words) > 1:
 
         words[0] = words[0] + words.pop[1]
         usermethods.add_list(filename, words)
 
     # 'at" command
-    elif words[0] in av:
+    elif words[0] in al:
 
         usermethods.add_list(filename, words)
 
     #########################
 
     # 'add value to list' command
-    elif " ".join(words[:4]) in avl:
+    elif " ".join(words[:4]) in avl and len(words) > 1:
 
         words[0] = words[0] + ''.join([words.pop(i) for i in range(1, 4)])
         usermethods.add_value_to_list(filename, words)
