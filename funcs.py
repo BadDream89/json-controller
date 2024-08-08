@@ -42,7 +42,7 @@ def change_data(filename: str,
     conv_value = convert_value(value, datatype)
 
     # conv_value will be None if there is an error while running the function
-    if conv_value == None:
+    if conv_value is None:
         return
 
     # updates data in json file

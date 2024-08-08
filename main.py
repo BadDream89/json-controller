@@ -8,7 +8,7 @@ import time
 def main(filename):
 
 
-    if not filename in os.listdir(funcs.dir_path):
+    if filename not in os.listdir(funcs.dir_path):
 
         #print(filename, os.listdir(funcs.dir_path))
         print("cannot find the file. Creating new.")

@@ -90,8 +90,7 @@ def add_value_to_list(filename: str, words: list) -> None:
     
     data: dict = funcs.load_data(filename)
 
-    typeofkey = type(data[key])
-    if typeofkey != type(list()):
+    if isinstance(data[key], list):
 
         print("error: value of the key that was given isn't a list")
         return
